@@ -1,0 +1,35 @@
+{
+  "name": "botto",
+  "version": "1.0.0",
+  "description": "Discord botto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vaeb/Botto.git"
+  },
+  "author": "Vaeb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vaeb/Botto/issues"
+  },
+  "homepage": "https://github.com/Vaeb/Botto#readme",
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0"
+  },
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "erlpack": "github:discordapp/erlpack",
+    "libsodium-wrappers": "^0.7.3",
+    "node-opus": "^0.2.7",
+    "uws": "^9.14.0",
+    "zlib-sync": "^0.1.4"
+  }
+}
