@@ -46,9 +46,9 @@ class MessageHandler {
                             const fields = [
                                 { name: 'English', value: details.alternativeTitles.english },
                                 { name: 'Type', value: details.information.type },
-                                { name: 'Aired', value: useAired },
                                 { name: 'Studio', value: details.information.studios },
                                 { name: 'Episodes', value: details.information.episodes },
+                                { name: 'Aired', value: useAired },
                                 { name: 'Score', value: details.score },
                                 { name: 'Rank', value: `#${details.rank}` },
                                 { name: 'Popularity', value: `#${details.popularity}` },
