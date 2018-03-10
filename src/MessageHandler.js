@@ -4,14 +4,14 @@ class MessageHandler {
     }
 
     checkKeywords(msgObj) {
-        const { content, member, channel, guild } = msgObj;
+        const { content, member, channel } = msgObj;
 
-        const matches = this.modules.util.globalRegex(content, /!{(.+?)}/gm);
+        const matches = this.mods.util.globalRegex(content, /!{(.+?)}/gm);
 
         for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
+            const match = matches[i][0];
 
-            console.log('Found match: ', match);
+            this.mods.util.sendEmbed(channel, { title: 'Found match', desc: match });
         }
     }
 

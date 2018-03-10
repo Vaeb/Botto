@@ -15,7 +15,7 @@ class Events {
 
             message: this.client.on('message', (msgObj) => {
                 if (!msgObj.guild) return;
-                this.modules.messageHandler.onMsg(msgObj);
+                this.mods.messageHandler.onMsg(msgObj);
             }),
         };
 

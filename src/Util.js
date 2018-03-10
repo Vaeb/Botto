@@ -3,6 +3,21 @@ class Util {
         Object.keys(classData).forEach((key) => { this[key] = classData[key]; });
     }
 
+    sendEmbed(channel, { title, desc, footer = '', color = this.colors.green, fields = [] }) {
+        const embed = new this.RichEmbed()
+            .setTitle(title)
+            .setDescription(desc)
+            .setFooter(footer)
+            .setColor(color);
+
+        for (let i = 0; i < fields.length; i++) {
+            const field = fields[i];
+            embed.addField(field.name, field.value, field.inline);
+        }
+
+        channel.send(embed);
+    }
+
     globalRegex(str, re) {
         const out = [];
         let match;
