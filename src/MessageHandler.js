@@ -40,19 +40,24 @@ class MessageHandler {
                 .then((animes) => {
                     if (animes && animes.length > 0) {
                         animes[0].getDetails().then((details) => {
-                            let useAired = details.information.aired || 'N/A';
+                            let useAired = details.information.aired || 'Unknown';
                             if (useAired.includes('to')) useAired = useAired.match(/(.+?) to/)[1];
 
                             const fields = [
-                                { name: 'English', value: details.alternativeTitles.english },
                                 { name: 'Type', value: details.information.type },
                                 { name: 'Studio', value: details.information.studios },
-                                { name: 'Episodes', value: details.information.episodes },
+                                { name: 'Episodes', value: details.information.episodes || 'Unknown' },
                                 { name: 'Aired', value: useAired },
                                 { name: 'Score', value: details.score },
                                 { name: 'Rank', value: `#${details.rank}` },
                                 { name: 'Popularity', value: `#${details.popularity}` },
                             ];
+
+                            if (details.alternativeTitles.english) {
+                                fields.splice(0, 0, { name: 'English', value: details.alternativeTitles.english });
+                            } else if (details.alternativeTitles.japanese) {
+                                fields.splice(0, 0, { name: 'Japanese', value: details.alternativeTitles.japanese });
+                            }
 
                             let useSynopsis = details.synopsis.length <= 313 ? details.synopsis.trim() : `${details.synopsis.substr(0, 313).trim()}...`;
                             useSynopsis += `\n\n${details.href}\n${this.noChar}`;
