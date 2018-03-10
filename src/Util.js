@@ -3,16 +3,17 @@ class Util {
         Object.keys(classData).forEach((key) => { this[key] = classData[key]; });
     }
 
-    sendEmbed(channel, { title, desc, footer = '', color = this.colors.green, fields = [] }) {
+    sendEmbed(channel, { title = '', desc = '', footer = '', color = this.colors.green, fields = [], image }) {
         const embed = new this.RichEmbed()
             .setTitle(title)
             .setDescription(desc)
             .setFooter(footer)
+            .setThumbnail(image)
             .setColor(color);
 
         for (let i = 0; i < fields.length; i++) {
             const field = fields[i];
-            embed.addField(field.name, field.value, field.inline);
+            embed.addField(field.name, field.value, field.inline == null ? true : field.inline);
         }
 
         channel.send(embed);
