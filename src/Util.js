@@ -3,6 +3,10 @@ class Util {
         Object.keys(classData).forEach((key) => { this[key] = classData[key]; });
     }
 
+    print(channel, ...args) {
+        return channel.send(args.join(' '), { split: true });
+    }
+
     sendEmbed(channel, { title = '', desc = '', footer = '', color = this.colors.green, fields = [], image }) {
         const embed = new this.RichEmbed()
             .setTitle(title)
