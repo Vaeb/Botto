@@ -1,2 +1,2 @@
-# Botto
-Discord bot
+# Niimp
+Created using discord.js
