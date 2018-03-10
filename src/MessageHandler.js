@@ -1,8 +1,4 @@
-class MessageHandler {
-    constructor(classData) {
-        Object.keys(classData).forEach((key) => { this[key] = classData[key]; });
-    }
-
+class MessageHandler extends require('./Util') {
     checkEval(msgObj) {
         const { content, member, channel } = msgObj;
 
@@ -18,9 +14,9 @@ class MessageHandler {
                 if (result !== undefined) {
                     const outStr = ['**Output:**'];
                     outStr.push('```');
-                    outStr.push(this.mods.NodeUtil.format(result));
+                    outStr.push(this.modules.NodeUtil.format(result));
                     outStr.push('```');
-                    this.mods.util.print(channel, outStr.join('\n'));
+                    this.print(channel, outStr.join('\n'));
                 }
             })
             .catch((err) => {
@@ -31,42 +27,48 @@ class MessageHandler {
     checkKeywords(msgObj) {
         const { content, channel } = msgObj;
 
-        const matches = this.mods.util.globalRegex(content, /{{(.+?)}}/gm);
+        const matches = this.globalRegex(content, /{{(.+?)}}/gm);
 
         for (let i = 0; i < matches.length; i++) {
             const match = matches[i][0];
 
-            this.mods.malDetails.search(match, 'anime')
+            console.log(`Keyword used: ${match}`);
+
+            this.modules.malDetails.search(match, 'anime')
                 .then((animes) => {
                     if (animes && animes.length > 0) {
-                        animes[0].getDetails().then((details) => {
-                            let useAired = details.information.aired || 'Unknown';
-                            if (useAired.includes('to')) useAired = useAired.match(/(.+?) to/)[1];
+                        animes[0].getDetails()
+                            .then((details) => {
+                                console.log(`Found series: ${details.title}`);
 
-                            const fields = [
-                                { name: 'Type', value: details.information.type },
-                                { name: 'Studio', value: details.information.studios },
-                                { name: 'Episodes', value: details.information.episodes || 'Unknown' },
-                                { name: 'Aired', value: useAired },
-                                { name: 'Score', value: details.score },
-                                { name: 'Rank', value: `#${details.rank}` },
-                                { name: 'Popularity', value: `#${details.popularity}` },
-                            ];
+                                let useAired = details.information.aired || 'Unknown';
+                                if (useAired.includes('to')) useAired = useAired.match(/(.+?) to/)[1];
 
-                            if (details.alternativeTitles.english) {
-                                fields.splice(0, 0, { name: 'English', value: details.alternativeTitles.english });
-                            } else if (details.alternativeTitles.japanese) {
-                                fields.splice(0, 0, { name: 'Japanese', value: details.alternativeTitles.japanese });
-                            }
+                                const fields = [
+                                    { name: 'Type', value: details.information.type },
+                                    { name: 'Studio', value: details.information.studios },
+                                    { name: 'Episodes', value: details.information.episodes || 'Unknown' },
+                                    { name: 'Aired', value: useAired },
+                                    { name: 'Score', value: details.score },
+                                    { name: 'Rank', value: `#${details.rank}` },
+                                    { name: 'Popularity', value: `#${details.popularity}` },
+                                ];
 
-                            let useSynopsis = details.synopsis.length <= 313 ? details.synopsis.trim() : `${details.synopsis.substr(0, 313).trim()}...`;
-                            useSynopsis += `\n\n${details.href}\n${this.noChar}`;
+                                if (details.alternativeTitles.english) {
+                                    fields.splice(0, 0, { name: 'English', value: details.alternativeTitles.english });
+                                } else if (details.alternativeTitles.japanese) {
+                                    fields.splice(0, 0, { name: 'Japanese', value: details.alternativeTitles.japanese });
+                                }
 
-                            this.mods.util.sendEmbed(channel, { title: details.title, desc: useSynopsis, image: details.poster, fields, footer: details.href });
-                        });
+                                let useSynopsis = details.synopsis.length <= 313 ? details.synopsis.trim() : `${details.synopsis.substr(0, 313).trim()}...`;
+                                useSynopsis += `\n\n${details.href}\n${this.noChar}`;
+
+                                this.sendEmbed(channel, { title: details.title, desc: useSynopsis, image: details.poster, fields, footer: details.href });
+                            })
+                            .catch(this.onError);
                     }
                 })
-                .catch(console.err);
+                .catch(this.onError);
         }
     }
 

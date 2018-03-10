@@ -1,13 +1,26 @@
 class Util {
-    constructor(classData) {
-        Object.keys(classData).forEach((key) => { this[key] = classData[key]; });
+    constructor(classData, classReady) {
+        this.readyPromise = new Promise((resolve) => {
+            classReady
+                .then(() => {
+                    Object.keys(classData).forEach((key) => {
+                        this[key] = classData[key];
+                    });
+                    resolve(true);
+                })
+                .catch(err => console.log('[ClassReady]', err));
+        });
     }
 
     print(channel, ...args) {
         return channel.send(args.join(' '), { split: true });
     }
 
-    sendEmbed(channel, { title = '', desc = '', footer = '', color = this.colors.green, fields = [], image }) {
+    onError(reason) {
+        console.log('[CAUGHT ERROR]', reason);
+    }
+
+    sendEmbed(channel, { title = '', desc = '', footer = '', color = this.colors.pink, fields = [], image }) {
         const embed = new this.RichEmbed()
             .setTitle(title)
             .setDescription(desc)

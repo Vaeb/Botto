@@ -1,5 +1,4 @@
 const NodeUtil = require('util');
-const MalSearch = require('chinmei');
 const MalDetails = require('mal-scrape');
 const { Client, RichEmbed } = require('discord.js');
 const Auth = require('./Auth');
@@ -10,15 +9,21 @@ const client = new Client({
     disableEveryone: true,
 });
 
-const mods = { NodeUtil, malSearch: new MalSearch(Auth.malAcc.user, Auth.malAcc.pass), malDetails: new MalDetails() };
-const colors = { green: 0x00E676, blue: 0x00BCD4 };
+const modules = { NodeUtil, malDetails: new MalDetails() };
+const colors = { green: 0x00E676, blue: 0x00BCD4, pink: 0xD062D8 };
 
-const classData = { client, RichEmbed, mods, colors, noChar: '­' };
+const classData = { client, RichEmbed, modules, colors, noChar: '­' };
 
-mods.util = new (require('./Util'))(classData);
-mods.messageHandler = new (require('./MessageHandler'))(classData);
-mods.events = new (require('./Events'))(classData);
+let classReadyResolve;
+const classReady = new Promise((resolve) => { classReadyResolve = resolve; });
 
-mods.events.init();
+classData.messageHandler = new (require('./MessageHandler'))(classData, classReady);
+classData.events = new (require('./Events'))(classData, classReady);
 
-client.login(Auth.discordToken);
+classReadyResolve(true);
+
+classData.events.readyPromise.then(() => {
+    classData.events.init();
+
+    client.login(Auth.discordToken);
+});

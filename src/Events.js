@@ -1,9 +1,7 @@
-class Events {
-    constructor(classData) {
-        Object.keys(classData).forEach((key) => { this[key] = classData[key]; });
-    }
-
+class Events extends require('./Util') {
     init() {
+        console.log(this.print);
+
         const events = {
             ready: this.client.on('ready', () => {
                 console.log(`Connected as ${this.client.user.username}`);
@@ -15,7 +13,7 @@ class Events {
 
             message: this.client.on('message', (msgObj) => {
                 if (!msgObj.guild) return;
-                this.mods.messageHandler.onMsg(msgObj);
+                this.messageHandler.onMsg(msgObj);
             }),
         };
 
