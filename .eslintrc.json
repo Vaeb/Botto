@@ -12,6 +12,7 @@
         "func-names": "off",
         "global-require": "off",
         "jsx-a11y/href-no-hash": "off",
+        "linebreak-style": "off",
         "max-len": "off",
         "no-bitwise": "off",
         "no-cond-assign": "off",
