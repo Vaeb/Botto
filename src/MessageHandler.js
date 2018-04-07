@@ -52,6 +52,7 @@ class MessageHandler extends require('./Util') {
                                     { name: 'Score', value: details.score },
                                     { name: 'Rank', value: `#${details.rank}` },
                                     { name: 'Popularity', value: `#${details.popularity}` },
+                                    { name: 'Genres', value: details.information.genres },
                                 ];
 
                                 if (details.alternativeTitles.english) {
