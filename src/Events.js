@@ -15,6 +15,11 @@ class Events extends require('./Util') {
                 if (!msgObj.guild) return;
                 this.messageHandler.onMsg(msgObj);
             }),
+
+            message_update: this.client.on('messageUpdate', (msgObj) => {
+                if (!msgObj.guild) return;
+                this.messageHandler.onMsg(msgObj);
+            }),
         };
 
         return events;
